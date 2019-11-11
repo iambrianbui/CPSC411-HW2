@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">BBuiHW2</string>
+    <string name="fname">First Name</string>
+    <string name="lname">Last Name</string>
+    <string name="cwid">CWID</string>
+    <string name="cid">Course ID</string>
+    <string name="grade">Grade</string>
+    <string name="addcourse">Add Course</string>
+</resources>
