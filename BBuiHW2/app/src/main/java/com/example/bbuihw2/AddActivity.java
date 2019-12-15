@@ -8,6 +8,7 @@ Due 11/11/2019
 
 package com.example.bbuihw2;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
 
 import com.example.bbuihw2.model.Course;
 import com.example.bbuihw2.model.Student;
@@ -29,7 +31,7 @@ import java.util.ArrayList;
 public class AddActivity extends AppCompatActivity {
 
     protected Menu addMenu;
-    ArrayList<Course> courses = new ArrayList<Course>();
+    ArrayList<Course> courses = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -39,21 +41,44 @@ public class AddActivity extends AppCompatActivity {
         final GridLayout root = findViewById(R.id.course_grid);
         root.setBackgroundResource(R.drawable.border);
 
+        final EditText courseID = new EditText(this);
+        courseID.setSingleLine();
+        courseID.setText("");
+        courseID.setTextSize(14);
+        root.addView(courseID);
+
+        final EditText courseGrade = new EditText(this);
+        courseGrade.setSingleLine();
+        courseGrade.setText("");
+        courseGrade.setTextSize(14);
+        root.addView(courseGrade);
+
         //  adding new courses
         Button addButton = findViewById(R.id.add_course);
         addButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                EditText courseID = new EditText(view.getContext());
-                courseID.setSingleLine();
-                courseID.setTextSize(14);
-                root.addView(courseID);
+                String tCourse = courseID.getText().toString();
+                String tGrade = courseGrade.getText().toString();
+                TextView c = findViewById(R.id.add_cwid);
+                String cwid = c.getText().toString();
+                if (!tCourse.equals("") && !tGrade.equals("") && !cwid.equals("")){
+                    TextView id = new TextView(view.getContext());
+                    id.setText(courseID.getText().toString());
+                    id.setTextSize(14);
+                    id.setSingleLine();
+                    root.addView(id);
 
-                EditText courseGrade = new EditText(view.getContext());
-                courseGrade.setSingleLine();
-                courseGrade.setTextSize(14);
-                root.addView(courseGrade);
-                courses.add(new Course(courseID.getText().toString(), courseGrade.getText().toString()));
+                    TextView grade = new TextView(view.getContext());
+                    grade.setText(courseGrade.getText().toString());
+                    grade.setTextSize(14);
+                    grade.setSingleLine();
+                    root.addView(grade);
+
+                    courses.add(new Course(courseID.getText().toString(), courseGrade.getText().toString(), cwid));
+                    courseID.setText("");
+                    courseGrade.setText("");
+                }
             }
         });
     }
@@ -78,11 +103,19 @@ public class AddActivity extends AppCompatActivity {
             String lastname = ln.getText().toString();
             String cwid = ci.getText().toString();
 
-            if(cwid != "" && firstname != "" && lastname != ""){
+            if(!cwid.equals("") && !fn.equals("") && !ln.equals("") && !courses.isEmpty()){
                 Student student = new Student(firstname,lastname,cwid,courses);
                 StudentDB.getInstance().addStudent(student);
+                finish();
             }
-            finish();
+            else{
+                final AlertDialog.Builder dAlert = new AlertDialog.Builder(this);
+                dAlert.setMessage("Not all fields inputted!");
+                dAlert.setTitle("Error");
+                dAlert.setPositiveButton("OK", null);
+                dAlert.create().show();
+            }
+
         }
         return super.onOptionsItemSelected(item);
     }

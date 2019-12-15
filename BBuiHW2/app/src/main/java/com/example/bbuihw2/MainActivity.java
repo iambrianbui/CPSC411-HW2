@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.student_list_view);
-        createStudentObjects();
 
         mSummaryView = findViewById(R.id.summary_list_id);
         adapter = new SAdapter();
@@ -66,6 +65,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     //  some test objects
+    /*
     protected void createStudentObjects(){
         ArrayList<Student> students = new ArrayList<Student>();
 
@@ -95,4 +95,6 @@ public class MainActivity extends AppCompatActivity{
 
         StudentDB.getInstance().setStudentList(students);
     }
+
+     */
 }
